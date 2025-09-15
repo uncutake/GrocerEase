@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GrocerEaseFinal.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="GrocerEase"
+    BackgroundColor="#F4F1E8">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Double x:Key="MenuDiameter">44</x:Double>
+            <x:Double x:Key="IconWidth">20</x:Double>
+            <x:Double x:Key="IconHeight">20</x:Double>
+            <x:Double x:Key="IconStroke">3</x:Double>
+            <Thickness x:Key="MenuPadding">6,8,6,7</Thickness>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid x:Name="PageRoot">
+
+        <Grid x:Name="ContentGrid"
+          ColumnDefinitions="444,*"
+          ColumnSpacing="40"
+          RowDefinitions="Auto,*"
+          RowSpacing="64"
+          Padding="56,28,56,44"
+          BackgroundColor="#F4F1E8">
+
+            <!-- LEFT COLUMN -->
+            <Border Grid.Column="0"
+                    Grid.RowSpan="2"
+                    Padding="16"
+                    Stroke="#3A5A40"
+                    StrokeThickness="1.5"
+                    BackgroundColor="#A3B18A"
+                    VerticalOptions="FillAndExpand">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="18"/>
+                </Border.StrokeShape>
+
+                    <Grid ColumnDefinitions="Auto,*"
+                          RowDefinitions="Auto,Auto,*"
+                          ColumnSpacing="8"
+                          RowSpacing="12"
+                          VerticalOptions="FillAndExpand">
+
+                        <!--Bookmark -->
+                        <Border Grid.Row="0" Grid.Column="0"
+                            WidthRequest="44" HeightRequest="44"
+                            BackgroundColor="#588157" StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="22"/>
+                            </Border.StrokeShape>
+                                <Button x:Name="BookmarkButton"
+                                        Grid.Column="0"
+                                        Text="🔖"
+                                        BackgroundColor="#588157"
+                                        SemanticProperties.Hint="Open saved recipes"
+                                        WidthRequest="44" HeightRequest="44"
+                                        CornerRadius="22"
+                                        Clicked="OnBookmarkClick" />
+                        </Border>
+
+                        <!-- Generate -->
+                        <Button x:Name="GenerateButton"
+                                Grid.Row="0" Grid.Column="1"
+                                Text="Generate"
+                                TextColor="#F3F3E9"
+                                Padding="16,10"
+                                CornerRadius="22"
+                                HorizontalOptions="End"
+                                BackgroundColor="#588157"
+                                SemanticProperties.Hint="Generate recipes from grocery list"
+                                Clicked="OnGenerateClick" />
+
+                        <Label Text="Enter your grocery list"
+                               Grid.Row="1" Grid.Column="2"
+                               FontSize="16"
+                               TextColor="#F4F1E8" />
+
+                        <Border Grid.Row="2" Grid.ColumnSpan="2"
+                                BackgroundColor="White"
+                                Padding="10"
+                                StrokeThickness="0"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="FillAndExpand">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12"/>
+                            </Border.StrokeShape>
+
+                            <Editor x:Name="GroceryEditor"
+                                    Placeholder="Type items, one per line..."
+                                    PlaceholderColor="#909090"
+                                    TextColor="#222222"
+                                    AutoSize="Disabled"
+                                    Margin="0"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="FillAndExpand" />
+                        </Border>
+                    </Grid>
+            </Border>
+
+            <!-- RIGHT COLUMN -->
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,*"
+                  Margin="18,24,24,24"
+                  RowSpacing="16">
+                <Grid.Resources>
+                    <x:Double x:Key="TileHeight">300</x:Double>
+                    <Thickness x:Key="TileLabelMargin">0,8,0,0</Thickness>
+                </Grid.Resources>
+
+            <!-- Search row -->
+            <Grid Grid.Column="1"
+                  Grid.Row="0"
+                  ColumnDefinitions="*,Auto"
+                  ColumnSpacing="12"
+                  HeightRequest="44"
+                  Margin="0"
+                  VerticalOptions="Start">
+                <Entry x:Name="RecipeSearchBar"
+                       Grid.Column="0"
+                       Placeholder="Search recipe"
+                       HeightRequest="44"
+                       Completed="OnRecipeSearchBarCompleted"
+                       ReturnType="Search"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="Center"
+                       ClearButtonVisibility="WhileEditing"/>
+                <Border Grid.Column="1"
+                        x:Name="MenuButton"
+                        WidthRequest="44"
+                        HeightRequest="44"
+                        BackgroundColor="#588157"
+                        StrokeThickness="0"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Padding="6,8,6,7"
+                        SemanticProperties.Hint="Open menu">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="22" />
+                    </Border.StrokeShape>
+
+                    <Path Stroke="White"
+                          StrokeThickness="{StaticResource IconStroke}"
+                          StrokeLineCap="Round"
+                          WidthRequest="{StaticResource IconWidth}"
+                          HeightRequest="{StaticResource IconHeight}"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          Data="M 0 3 H 20 M 0 10 H 20 M 0 17 H 20"/>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnMenuClick"/>
+                    </Border.GestureRecognizers>
+                </Border>
+            </Grid>
+
+            <ScrollView Grid.Row="1"
+                        Margin="0,28,0,0"
+                        VerticalOptions="FillAndExpand"
+                  VerticalScrollBarVisibility="Always">
+                <Grid ColumnSpacing="40"
+                      RowSpacing="40">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- High-Protein -->
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="HighProteinTile"
+                                Grid.Row="0"
+                                StrokeThickness="0"
+                                HeightRequest="{StaticResource TileHeight}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20"/>
+                        </Border.StrokeShape>
+                        <Image Source="highprotein.jpg"
+                               Aspect="AspectFill"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill"/>
+                        </Border>
+                        <Label Grid.Row="1" Text="High-Protein"
+                               Margin="{StaticResource TileLabelMargin}"
+                               FontAttributes ="Bold"
+                               FontSize="24" TextColor="#99582A" />
+                    </Grid>
+
+                    <!-- Low-Carb -->
+                    <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                        <Border x:Name="LowCarbTile"
+                                Grid.Row="0"
+                                StrokeThickness="0"
+                                HeightRequest="{StaticResource TileHeight}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20"/>
+                        </Border.StrokeShape>
+                        <Image Source="lowcarb.jpg"
+                               Aspect="AspectFill"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill"/>
+                        </Border>
+                        <Label Grid.Row="1" Text="Low-Carb"
+                               Margin="{StaticResource TileLabelMargin}"
+                               FontAttributes="Bold"
+                               FontSize="24" TextColor="#99582A" />
+                    </Grid>
+
+                    <!-- Plant-Based -->
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="PlantBasedTile"
+                                Grid.Row="0"
+                                HeightRequest="{StaticResource TileHeight}"
+                                StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Image Source="plantbased.jpg"
+                                   Aspect="AspectFill"
+                                   HorizontalOptions="Fill"
+                                   VerticalOptions="Fill"/>
+                        </Border>
+                        <Label Grid.Row="1" Text="Plant-Based"
+                               Margin="{StaticResource TileLabelMargin}"
+                               FontAttributes="Bold"
+                               FontSize="24" TextColor="#99582A" />
+                    </Grid>
+
+                    <!-- Balanced -->
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="BalancedTile"
+                                Grid.Row="0"
+                                HeightRequest="{StaticResource TileHeight}"
+                                StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Image Source="balanced.jpg"
+                                   Aspect="AspectFill"
+                                   HorizontalOptions="Fill"
+                                   VerticalOptions="Fill"/>
+                        </Border>
+                        <Label Grid.Row="1" Text="Balanced"
+                               Margin="{StaticResource TileLabelHeight}"
+                               FontAttributes="Bold"
+                               FontSize="24" TextColor="#99582A" />
+                    </Grid>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </Grid>
+
+        <Grid x:Name="MenuOverlay"
+              IsVisible="False"
+              InputTransparent="False"
+              Grid.ZIndex="1000">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="360"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0"
+                  BackgroundColor="Transparent">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnOverlayTapped"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <ContentView x:Name="RightDrawerHost"
+                         Grid.Column="1"
+                         BackgroundColor="#588157"
+                         WidthRequest="360"
+                         TranslationX="360"
+                         Padding="28,100,28,28">
+
+                <VerticalStackLayout Spacing="28">
+                    <Label Text="Home"
+                           FontSize="36"
+                           TextColor="White"
+                           FontAttributes="Bold">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuHome" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Text="Log In"
+                           FontSize="36"
+                           FontAttributes="Bold"
+                           TextColor="White">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMenuLogin" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </VerticalStackLayout>
+            </ContentView>
+        </Grid>
+
+    </Grid>
+</ContentPage>
