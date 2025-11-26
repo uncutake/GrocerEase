@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GrocerEaseFinal.GroceryListsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Grocery Lists"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#F4F1E8">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="#2B2B2B" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*" Padding="16,12">
+
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*,Auto"
+              VerticalOptions="Center">
+
+            <Border
+                WidthRequest="32"
+                HeightRequest="32"
+                BackgroundColor="#588157"
+                StrokeThickness="0"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Padding="2">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+
+                <Label Text="‹"
+                       FontSize="22"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#F4F1E8">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Border>
+
+            <Label Grid.Column="1"
+                   Text="Saved Grocery Lists"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   Margin="8,0,0,0" />
+
+            <Button x:Name="RemoveButton"
+                    Grid.Column="2"
+                    Text="Remove"
+                    BackgroundColor="#588157"
+                    TextColor="White"
+                    Padding="14,8"
+                    CornerRadius="16"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Clicked="OnRemoveSelected"
+                    IsEnabled="False" />
+        </Grid>
+
+        <ActivityIndicator x:Name="Busy"
+                           Grid.Row="1"
+                           IsVisible="False"
+                           IsRunning="{Binding IsVisible, Source={x:Reference Busy}}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+        <VerticalStackLayout x:Name="EmptyState"
+                             Grid.Row="1"
+                             Spacing="8"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
+            <Label Text="No saved lists yet."
+                   FontSize="18"
+                   HorizontalTextAlignment="Center" />
+            <Label Text="Go back and bookmark a list to see it here."
+                   FontSize="14"
+                   Opacity="0.7"
+                   HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+        <CollectionView x:Name="ListsView"
+                        Grid.Row="1"
+                        IsVisible="False"
+                        ItemsLayout="VerticalList"
+                        Margin="0,8,0,0"
+                        SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="12"
+                          ColumnDefinitions="*"
+                          BackgroundColor="White"
+                          Margin="0,0,0,12">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBookmarkTapped" />
+                        </Grid.GestureRecognizers>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                               Text="{Binding DateCreated, StringFormat='{0:yyyy-MM-dd HH:mm}'}"
+                               FontSize="12"
+                               TextColor="#666" />
+
+                        <Label Grid.Row="1"
+                               Text="{Binding Text}"
+                               LineBreakMode="WordWrap" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <CollectionView x:Name="ResultsView"
+                        Grid.Row="1"
+                        IsVisible="False"
+                        ItemsLayout="VerticalList"
+                        ItemSizingStrategy="MeasureAllItems"
+                        Margin="0,8,0,0"
+                        SelectionMode="Single"
+                        SelectionChanged="OnResultsSelected"
+                        VerticalOptions="FillAndExpand">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="100, *"
+                          Padding="10"
+                          BackgroundColor="Transparent"
+                          Margin="0,0,0,12">
+                        <Image Source="{Binding ImageUrl}"
+                               WidthRequest="90"
+                               HeightRequest="90"
+                               Aspect="AspectFill" />
+                        <VerticalStackLayout Grid.Column="1" Padding="10,0">
+                            <Label Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   FontSize="20" />
+                            <Label Text="{Binding Category}"
+                                   TextColor="Gray"
+                                   FontSize="16" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

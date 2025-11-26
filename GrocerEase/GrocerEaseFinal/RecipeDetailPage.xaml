@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GrocerEaseFinal.RecipeDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#F4F1E8">
+
+    <Grid RowDefinitions="Auto,*"
+          BackgroundColor="#F4F1E8">
+
+        <Grid Grid.Row="0"
+              Padding="12,8"
+              ColumnDefinitions="Auto,*"
+              VerticalOptions="Start">
+
+            <Border
+                WidthRequest="32"
+                HeightRequest="32"
+                BackgroundColor="#588157"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 16,16"
+                HorizontalOptions="Start"
+                VerticalOptions="Center"
+                Padding="2">
+
+                <Label Text="‹"
+                       FontSize="22"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#F4F1E8">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Border>
+
+            <Label Grid.Column="1"
+                   Text=""
+                   FontSize="18"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"
+                   Margin="8,0,0,0" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+
+            <ScrollView>
+                <VerticalStackLayout Spacing="12">
+
+                    <Grid HeightRequest="240">
+                        <Image Source="{Binding Recipe.ImageUrl}"
+                               Aspect="AspectFill" />
+
+                        <Label x:Name="StarButton"
+                               Text="{Binding StarText}"
+                               FontSize="30"
+                               TextColor="White"
+                               HorizontalOptions="End"
+                               VerticalOptions="Start"
+                               Margin="0,12,16,0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnToggleFavorite" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <Label Text="{Binding Recipe.Name}"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           Margin="16,10,16,0" />
+
+                    <Label Text="{Binding Recipe.Category}"
+                           FontSize="14"
+                           TextColor="Gray"
+                           Margin="16,0,16,0" />
+
+                    <Grid ColumnDefinitions="Auto,*"
+                          RowDefinitions="Auto,Auto"
+                          ColumnSpacing="8"
+                          Margin="16,10,16,0">
+
+                        <Label Text="Servings:"
+                               FontAttributes="Bold" />
+                        <Label Grid.Column="1"
+                               Text="{Binding Recipe.Servings}" />
+
+                        <Label Grid.Row="1"
+                               Text="Estimated Cost:"
+                               FontAttributes="Bold" />
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Text="{Binding Recipe.EstimatedCost, StringFormat='₱{0:N0}'}" />
+                    </Grid>
+
+                    <Label Text="Ingredients"
+                           FontAttributes="Bold"
+                           FontSize="20"
+                           Margin="16,16,16,0" />
+
+                    <Label Text="{Binding Recipe.Ingredients}"
+                           FontSize="16"
+                           Margin="16,0,16,0"
+                           LineBreakMode="WordWrap" />
+
+                    <Label Text="Instructions"
+                           FontAttributes="Bold"
+                           FontSize="20"
+                           Margin="16,16,16,0" />
+
+                    <Label Text="{Binding Recipe.Instructions}"
+                           FontSize="16"
+                           Margin="16,0,16,20"
+                           LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

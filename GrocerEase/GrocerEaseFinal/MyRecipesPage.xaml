@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GrocerEaseFinal.MyRecipesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#F4F1E8"
+    Shell.NavBarIsVisible="False">
+
+    <ContentPage.Content>
+        <StackLayout Padding="10" Spacing="10">
+
+            <Grid Padding="12,8"
+                  ColumnDefinitions="Auto,*"
+                  VerticalOptions="Start">
+
+                <Border
+                    WidthRequest="32"
+                    HeightRequest="32"
+                    BackgroundColor="#588157"
+                    StrokeThickness="0"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Padding="2">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+
+                    <Label Text="‹"
+                           FontSize="22"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="#F4F1E8">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBackTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Border>
+
+                <Label Grid.Column="1"
+                       Text="My Recipes"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"
+                       Margin="8,0,0,0" />
+            </Grid>
+
+            <CollectionView
+                x:Name="RecipesCollectionView"
+                ItemsSource="{Binding Recipes}"
+                SelectionMode="Single"
+                SelectionChanged="OnRecipeSelected">
+
+                <CollectionView.EmptyView>
+                    <StackLayout
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        Spacing="6">
+                        <Label
+                            Text="You don’t have any favorite recipes yet."
+                            FontSize="14"
+                            HorizontalOptions="Center" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            Margin="0,4"
+                            Padding="8"
+                            CornerRadius="12"
+                            HasShadow="False"
+                            BackgroundColor="White">
+
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Image
+                                    Source="{Binding ImageUrl}"
+                                    HeightRequest="60"
+                                    WidthRequest="60"
+                                    Aspect="AspectFill" />
+
+                                <StackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        Text="{Binding Name}"
+                                        FontAttributes="Bold"
+                                        FontSize="16" />
+
+                                    <Label
+                                        Text="{Binding Category}"
+                                        FontSize="12"
+                                        TextColor="Gray" />
+
+                                    <Label
+                                        Text="{Binding Servings, StringFormat='Servings: {0}'}"
+                                        FontSize="12"
+                                        TextColor="Gray" />
+
+                                    <Label
+                                        Text="{Binding EstimatedCost, StringFormat='Estimated Cost: {0}'}"
+                                        FontSize="12"
+                                        TextColor="Gray" />
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
